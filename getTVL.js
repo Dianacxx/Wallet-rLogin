@@ -15,13 +15,14 @@ const printArray = (array) => {
     }
 }
 
+const poolKey = '"0x8ad599c3a0ff1de082011efddc58f1908eb6e6d8"';
 const main = async() => {
     try{
         const result = await axios.post('https://api.thegraph.com/subgraphs/name/uniswap/uniswap-v3',
         {
             query: `
             {
-            pools(first: 1 where: {id: "0x8ad599c3a0ff1de082011efddc58f1908eb6e6d8"}){
+            pools(first: 1 where: {id: ${poolKey}}){
                 id
                 totalValueLockedToken0
                 totalValueLockedToken1
