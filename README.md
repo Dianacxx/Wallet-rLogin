@@ -4,6 +4,9 @@
 
 This project uses dependencies axios@0.21.1 and web3@1.3.4, and devDependecies webpack@4.46.0, webpack-cli@4.7.2, webpack-dev-server@3.11.2
 
+Use npm run start
+to initiate a server on port 9000
+
 ## History of changes
 ### install axios and add getTVL.js file
 

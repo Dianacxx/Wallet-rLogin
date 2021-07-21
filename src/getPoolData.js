@@ -15,8 +15,8 @@ const printArray = (array) => {
     }
 }
 
-const poolKey = '"0x8ad599c3a0ff1de082011efddc58f1908eb6e6d8"';
-const main = async() => {
+// This function returns a promise that fulfills to the TVL in the entered pool
+const getTVL = async(poolKey) => {
     try{
         const result = await axios.post('https://api.thegraph.com/subgraphs/name/uniswap/uniswap-v3',
         {
@@ -43,10 +43,11 @@ const main = async() => {
         });
         // Object is destructured and array within is sent to the printArray function
         //Object.entries(result.data.data).map(([key, value]) => Object.entries(value).map(([key2, { poolId, poolDayData }]) => printArray(poolDayData)));
-        Object.values(result.data.data).map(value => Object.values(value).map(({ poolId, poolDayData}) => printArray(poolDayData)));
+        //Object.values(result.data.data).map(value => Object.values(value).map(({ poolId, poolDayData}) => printArray(poolDayData)));
+        return result.data.data.pools;
     } catch(error) {
         console.error(error);
     }
 }
 
-main();
+module.exports = { getTVL, printArray };
