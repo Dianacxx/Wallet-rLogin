@@ -5,7 +5,9 @@ var tvl = new Intl.NumberFormat('en-US', {
     style: 'currency',
     currency: 'USD',
 });
-
+var yield = new Intl.NumberFormat('en-UD',{
+    style: 'percent'
+});
 window.onload = function() {
     // Variables
     let web3;
@@ -62,8 +64,47 @@ window.onload = function() {
             });
         });
     }
+    const parseJsonAsync = (jsonString) => {
+        
+        return new Promise(resolve => {
+            setTimeout(() => {
+              resolve(JSON.stringify(jsonString))
+            })
+        })        
+    }
 
+    // const poolKey = poolList.value;
+    const destructuredData = () =>{
+        GetPoolData.getTVL().then(value => {
+            Object.values(value).map(({id, token0, token1, totalValueLockedETH, poolDayData,feeGrowthGlobal0X128}) => {
+                // console.log(token0.Name,token1.name, totalValueLockedETH, poolDayData.feesUSD)
+                let acumTVL =0;
+                let acumFeesUSD =0;
+                var firstTokenSymbol = new String (token0.symbol);
+                var secondTokenSymbol = new String (token1.symbol);
+                var TVL = new Number(totalValueLockedETH);
+                var tvlArray = new Array(poolDayData.tvlUSD);
+                var feesArray = new Array(poolDayData.feesUSD);
+
+                for(let i=1; i < feesArray.length; i++){
+                    let date = new Date(feesArray[i]['date'] * 1000);
+                    acumTVL += tvlArray[i]['tvlUSD'];
+                    acumFeesUSD += feesArray[i]['feesUSD'];
+                }
+                let yield = (acumTVL/acumFeesUSD) *100;
+                // console.log(feesArray.length);
+                console.log(" first Token Symbol: " + firstTokenSymbol + 
+                " second Token Symbol: " + secondTokenSymbol+ 
+                " Total Value Locked ETH: " + TVL+ " Daily Fees: "+feesArray.length)
+            })
+        })
+        return firstTokenSymbol, secondTokenSymbol, TVL, yield;
+    }
+        
+
+        
+    
     // Listeners
     connectButton.addEventListener('click', connect);
-    poolButton.addEventListener('click', showPoolData);
+    poolButton.addEventListener('click', destructuredData);
 };

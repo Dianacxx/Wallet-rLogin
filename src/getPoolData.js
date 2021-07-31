@@ -16,27 +16,31 @@ const printArray = (array) => {
 }
 
 // This function returns a promise that fulfills to the TVL in the entered pool
-const getTVL = async(poolKey) => {
+const getTVL = async() => {
     try{
         const result = await axios.post('https://api.thegraph.com/subgraphs/name/uniswap/uniswap-v3',
         {
             query: `
             {
-            pools(first: 1 where: {id: ${poolKey}}){
+            pools(orderBy: totalValueLockedETH first: 5 ){
                 id
                 totalValueLockedToken0
                 totalValueLockedToken1
                 token0{
-                    name
+                    symbol
                 }
                 token1{
-                    name
+                    symbol
                 }
-                poolDayData {
+                poolDayData{
                     id
                     date
                     tvlUSD
+                    feesUSD
                 }
+                totalValueLockedETH
+                feeGrowthGlobal0X128
+
             }
             }
             `
