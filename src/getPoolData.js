@@ -22,15 +22,17 @@ const getTVL = async() => {
         {
             query: `
             {
-            pools(orderBy: totalValueLockedETH first: 5 ){
+            pools(orderBy: totalValueLockedETH  orderDirection: desc first: 5 ){
                 id
                 totalValueLockedToken0
                 totalValueLockedToken1
                 token0{
                     symbol
+                    
                 }
                 token1{
                     symbol
+                    
                 }
                 poolDayData{
                     id
